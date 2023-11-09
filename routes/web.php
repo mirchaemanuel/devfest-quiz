@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home');
-})->name('pages.home');
+Route::get('/', [PageHomeController::class, 'index'])->name('pages.home');
 
 Route::middleware([
     'auth:sanctum',

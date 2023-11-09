@@ -47,6 +47,9 @@
         <div class="mt-16">
             <section id="welcome" class="my-8 p-8">
                 <h2 class="font-bold text-xl text-center">{{ __('GDG Pescara - DevFest Quiz') }}</h2>
+                <div>
+                    {{ __('Users :count', ['count' => $totalUsers]) }}
+                </div>
             </section>
             <section id="ranking" class="my-8 p-8 bg-white rounded">
                 <h2 class="font-bold text-xl">{{ __('Ranking') }}</h2>

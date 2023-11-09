@@ -3,7 +3,7 @@
 use App\Models\Quiz;
 use App\Models\User;
 
-it('has quizzes', function() {
+it('has quizzes', function () {
     // Arrange
     $user = User::factory()->has(
         Quiz::factory()->count(3),
@@ -14,4 +14,4 @@ it('has quizzes', function() {
         ->toHaveCount(3)
         ->each->toBeInstanceOf(Quiz::class);
 
- });
+});

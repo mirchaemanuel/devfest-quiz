@@ -34,7 +34,7 @@
         </div>
     @endif
 
-    <div class="max-w-7xl mx-auto p-6 lg:p-8 w-full">
+    <div class="max-w-7xl mx-auto p-6 lg:p-8 w-full ">
         <div class="flex justify-center">
             <svg viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg"
                  class="h-16 w-auto bg-gray-100 dark:bg-gray-900">
@@ -46,15 +46,20 @@
 
         <div class="mt-16">
             <section id="welcome" class="my-8 p-8">
-                <h2 class="font-bold text-xl text-center">{{ __('GDG Pescara - DevFest Quiz') }}</h2>
-                <div>
-                    {{ __('Users :count', ['count' => $totalUsers]) }}
+                <h2 class="font-bold text-2xl text-center pb-4 mb-4 w-full border-b-2">{{ __('GDG Pescara - DevFest Quiz') }}</h2>
+                <div class="flex flex-col sm:flex-row justify-between items-center font-medium text-xl">
+                    <div>
+                        {{ __('Users :count', ['count' => $totalUsers]) }}
+                    </div>
+                    <div>
+                        {{ __('Quizzes :count', ['count' => $totalQuizzes]) }}
+                    </div>
+                    <div>
+                        {{ __('Quiz attempts :count', ['count' => $totalQuizAttempts]) }}
+                    </div>
                 </div>
-                <div>
-                    {{ __('Quizzes :count', ['count' => $totalQuizzes]) }}
-                </div>
-                <div>
-                    {{ __('Quiz attempts :count', ['count' => $totalQuizAttempts]) }}
+                <div class="text-lg text-center mx-16 my-4">
+                    {{ __("Welcome to the \"Journey of a Commit\" at DevFest. Let's embark on an exploratory path through the lifecycle of a commit. As we unravel the DevOps practices that bring ideas to production, this DevFest Quiz app serves as a real-world example, illustrating the pivotal stages from code commit to deployment. Get ready to dive into the DevFest challenge, test your knowledge, and see DevOps in action!") }}
                 </div>
             </section>
             <section id="ranking" class="my-8 p-8 bg-white rounded">

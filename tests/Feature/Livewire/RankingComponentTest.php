@@ -1,8 +1,8 @@
 <?php
 
-it('exaple', function() {
+it('exaple', function () {
     // Arrange
 
     // Act & Assert
     expect(true)->toBe(true);
- });
+});

@@ -2,6 +2,7 @@
 
 use App\Models\Quiz;
 use App\Models\User;
+
 use function Pest\Laravel\get;
 
 it('shows welcome section', function () {
@@ -53,7 +54,7 @@ it('shows of total of quizzes taken in welcome section', function () {
     $quizzes = Quiz::factory()->count(3)->create();
     User::factory()->count(4)->create()
         ->each(
-            fn($user) => $user->quizzes()->attach($quizzes->pluck('id'))
+            fn ($user) => $user->quizzes()->attach($quizzes->pluck('id'))
         );
 
     // Act & Assert

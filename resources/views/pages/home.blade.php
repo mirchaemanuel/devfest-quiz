@@ -50,11 +50,17 @@
                 <div>
                     {{ __('Users :count', ['count' => $totalUsers]) }}
                 </div>
+                <div>
+                    {{ __('Quizzes :count', ['count' => $totalQuizzes]) }}
+                </div>
+                <div>
+                    {{ __('Quiz attempts :count', ['count' => $totalQuizAttempts]) }}
+                </div>
             </section>
             <section id="ranking" class="my-8 p-8 bg-white rounded">
                 <h2 class="font-bold text-xl">{{ __('Ranking') }}</h2>
                 <div>
-                    <livewire:ranking />
+                    <livewire:ranking/>
                 </div>
             </section>
         </div>

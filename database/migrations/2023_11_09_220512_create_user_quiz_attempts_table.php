@@ -15,6 +15,9 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Quiz::class);
 
+            $table->integer('score')->nullable(false)->default(0);
+            $table->dateTime('completed_at')->nullable(true);
+
             $table->timestamps();
         });
     }

@@ -64,6 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Quiz::class, 'user_quiz_attempts')
             ->withTimestamps()
+            ->withPivot('score', 'completed_at')
             ->orderByDesc('pivot_created_at');
     }
 }

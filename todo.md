@@ -1,8 +1,8 @@
 # TODO
 
 ## Guest can
-- see home page (page)
-- see ranking result (page)
+- see home page (page) ✅
+- see ranking result in home page (page)
 
 ## Members can
 - log in (page)

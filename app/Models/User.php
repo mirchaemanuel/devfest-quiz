@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -66,5 +68,27 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps()
             ->withPivot('score', 'completed_at')
             ->orderByDesc('pivot_created_at');
+    }
+
+    protected function totalScore(): Attribute
+    {
+        return Attribute::make(get: function () {
+            return $this->quizzes->whereNotNull('pivot.completed_at')
+                ->sum('pivot.score');
+        });
+    }
+
+    /**
+     * Scope a query to include total score for each user.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeWithTotalScore($query): Builder
+    {
+        return $query->addSelect([
+            'total_score' => UserQuizAttempt::selectRaw('sum(score)')
+                ->whereColumn('user_id', 'users.id')
+        ]);
     }
 }

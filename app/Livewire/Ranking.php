@@ -3,16 +3,19 @@
 namespace App\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Ranking extends Component
 {
     public function render()
     {
-        $scoredUsers = User::with('quizzes')
-            ->orderByDesc('score')
+
+        $results = User::withTotalScore()
+            ->orderBy('total_score', 'desc')
+            ->limit(10)
             ->get();
 
-        return view('livewire.ranking');
+        return view('livewire.ranking', compact('results'));
     }
 }

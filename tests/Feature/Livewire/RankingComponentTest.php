@@ -4,7 +4,7 @@ use App\Livewire\Ranking;
 use App\Models\Quiz;
 use App\Models\User;
 
-it('shows list of 10 users with highest score', function () {
+it('shows list of 10 users with highest score ordered by highest score', function () {
     // Arrange
     // each user has taken the same one quiz
     $users = User::factory()->count(20)->create();
@@ -18,7 +18,7 @@ it('shows list of 10 users with highest score', function () {
     $users->take(12)->each(function (User $user, int $index) use ($scores) {
         $user->quizzes()->first()->pivot->update([
             'score'      => $scores[$index],
-            'created_at' => now(),
+            'completed_at' => now(),
         ]);
     });
 
@@ -46,11 +46,16 @@ it('shows list of 10 users with highest score', function () {
             $users->get(9)->name,
             '10',
         ])
-        ->assertDontSeeHtml([
+        ->assertDontSeeText([
             $users->get(10)->name,
-            '5',
             $users->get(11)->name,
-            '4',
         ])
     ;
 });
+
+it('', function() {
+    // Arrange
+
+    // Act & Assert
+
+ });

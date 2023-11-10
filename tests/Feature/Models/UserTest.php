@@ -48,3 +48,66 @@ describe('pivot `quizzes`', function () {
 
     });
 });
+
+it('has totalScore attribute', function () {
+    // Arrange
+    $user = User::factory()
+        ->hasAttached(
+            Quiz::factory()->count(2),
+            ['score' => 10, 'completed_at' => now()],
+            'quizzes'
+        )->create();
+
+    // Act & Assert
+    expect($user)->totalScore
+        ->toBe(20);
+
+});
+
+test('totalScore attributes contains only score from completed quizzes', function () {
+    // Arrange
+    $user = User::factory()
+        ->hasAttached(
+            Quiz::factory()->count(2),
+            ['score' => 10, 'completed_at' => now()],
+            'quizzes'
+        )->create();
+    $user->quizzes()->attach(
+        Quiz::factory()->create(), ['score' => 10]
+    );
+
+    // Act & Assert
+    expect($user)->totalScore
+        ->toBe(20);
+
+});
+
+it('returns totalScore with scope withTotalScore', function () {
+    // Arrange
+    User::factory()
+        ->hasAttached(
+            Quiz::factory()->count(2),
+            ['score' => 10, 'completed_at' => now()],
+            'quizzes'
+        )->create();
+
+    // Act & Assert
+    expect(User::withTotalScore()->first())->totalScore
+        ->toBe(20);
+
+    // Arrange
+    User::factory()
+        ->count(5)
+        ->hasAttached(
+            Quiz::factory()->count(2),
+            ['score' => 10, 'completed_at' => now()],
+            'quizzes'
+        )->create();
+
+    // Act & Assert
+    // it works with collections too
+    User::withTotalScore()->get()->each(
+        fn($user) => expect($user)->totalScore->toBe(20)
+    );
+
+});

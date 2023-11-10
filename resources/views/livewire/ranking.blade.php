@@ -8,10 +8,10 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($scoredUsers as $scoreUser)
+            @foreach($results as $result)
                 <tr>
-                    <td>{{ $scoredUsers->name }}</td>
-                    <td>{{ $scoredUsers->score }}</td>
+                    <td>{{ $result->name }}</td>
+                    <td>{{ $result->total_score }}</td>
                 </tr>
             @endforeach
             </tbody>

@@ -10,14 +10,14 @@ it('shows list of 10 users with highest score ordered by highest score', functio
     $users = User::factory()->count(20)->create();
     $quizzes = Quiz::factory()->count(1)->create();
     $users->each(
-        fn ($user) => $user->quizzes()->attach($quizzes->pluck('id'))
+        fn($user) => $user->quizzes()->attach($quizzes->pluck('id'))
     );
 
     // let's arrange the ranking for 12 users
     $scores = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 4];
     $users->take(12)->each(function (User $user, int $index) use ($scores) {
         $user->quizzes()->first()->pivot->update([
-            'score' => $scores[$index],
+            'score'        => $scores[$index],
             'completed_at' => now(),
         ]);
     });
@@ -52,9 +52,24 @@ it('shows list of 10 users with highest score ordered by highest score', functio
         ]);
 });
 
-it('', function () {
+it('orders results descendents from highest score', function () {
     // Arrange
+    $firstUser = User::factory()->hasAttached(
+        Quiz::factory()->count(1),
+        ['score' => 100, 'completed_at' => now()]
+    )->create();
+    $secondUser = User::factory()->hasAttached(
+        Quiz::factory()->count(1),
+        ['score' => 90, 'completed_at' => now()]
+    )->create();
 
     // Act & Assert
+    Livewire::test(Ranking::class)
+        ->assertSeeInOrder([
+            $firstUser->name,
+            '100',
+            $secondUser->name,
+            '90',
+        ]);
 
 });

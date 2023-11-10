@@ -47,9 +47,9 @@
         <div class="mt-16">
             <section id="welcome" class="my-8 p-8">
                 <h2 class="font-bold text-2xl text-center pb-4 mb-4 w-full border-b-2">{{ __('GDG Pescara - DevFest Quiz') }}</h2>
-                <div class="flex flex-col sm:flex-row justify-between items-center font-medium text-xl">
+                <div class="flex flex-col sm:flex-row gap-4 sm:gap-2 justify-between items-center font-medium text-xl mb-4 pb-4 border-b-2">
                     <div>
-                        {{ __('Users :count', ['count' => $totalUsers]) }}
+                        {{ __('Players :count', ['count' => $totalUsers]) }}
                     </div>
                     <div>
                         {{ __('Quizzes :count', ['count' => $totalQuizzes]) }}
@@ -62,8 +62,8 @@
                     {{ __("Welcome to the \"Journey of a Commit\" at DevFest. Let's embark on an exploratory path through the lifecycle of a commit. As we unravel the DevOps practices that bring ideas to production, this DevFest Quiz app serves as a real-world example, illustrating the pivotal stages from code commit to deployment. Get ready to dive into the DevFest challenge, test your knowledge, and see DevOps in action!") }}
                 </div>
             </section>
-            <section id="ranking" class="my-8 p-8 bg-white rounded">
-                <h2 class="font-bold text-xl">{{ __('Ranking') }}</h2>
+            <section id="ranking" class="my-8 px-8 py-8 bg-white rounded">
+                <h2 class="font-bold text-2xl mb-4">{{ __('Ranking') }}</h2>
                 <div>
                     <livewire:ranking/>
                 </div>

@@ -26,7 +26,7 @@ describe('pivot `quizzes`', function () {
 
         // Act & Assert
         expect($userQuizAttempt)->score
-            ->toBe((int)0)
+            ->toBe((int) 0)
             ->and($userQuizAttempt)->update(['score' => 10])
             ->and($userQuizAttempt)->score
             ->toBe(10);
@@ -107,7 +107,7 @@ it('returns totalScore with scope withTotalScore', function () {
     // Act & Assert
     // it works with collections too
     User::withTotalScore()->get()->each(
-        fn($user) => expect($user)->totalScore->toBe(20)
+        fn ($user) => expect($user)->totalScore->toBe(20)
     );
 
 });

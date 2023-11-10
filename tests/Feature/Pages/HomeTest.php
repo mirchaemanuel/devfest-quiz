@@ -29,7 +29,7 @@ it('shows total of users in welcome section', function () {
         ->assertSeeInOrder([
             '<section',
             'id="welcome"',
-            __('Users :count', ['count' => $users->count()]),
+            __('Players :count', ['count' => $users->count()]),
         ], false);
 
 });

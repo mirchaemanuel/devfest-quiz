@@ -12,14 +12,14 @@ it('has score column', function () {
 
     // Act & Assert
     expect(UserQuizAttempt::first()->score)
-        ->toBe((int)0)
+        ->toBe((int) 0)
         ->and(UserQuizAttempt::first()->update(['score' => 10]))
         ->and(UserQuizAttempt::first()->score)
         ->toBe(10);
 
 });
 
-it('has completed_at column', function() {
+it('has completed_at column', function () {
     // Arrange
     $user = User::factory()
         ->has(Quiz::factory(), 'quizzes')
@@ -32,4 +32,4 @@ it('has completed_at column', function() {
         ->and(UserQuizAttempt::first()->completed_at)
         ->toBeInstanceOf(Illuminate\Support\Carbon::class);
 
- });
+});

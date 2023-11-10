@@ -18,7 +18,11 @@ class AddingTestQuizAttemptsSeeder extends Seeder
         }
         $quizzes = Quiz::select('id')->inRandomOrder()->get();
         User::all()->each(function (User $user) use ($quizzes) {
-            $user->quizzes()->attach($quizzes->random(2)->pluck('id')->toArray());
+            $user->quizzes()->attach($quizzes->random(2)->pluck('id')->toArray(),
+                [
+                    'score' => rand(0, 100),
+                    'completed_at' => now()->subDays(rand(0, 30)),
+                ]);
         });
 
     }

@@ -4,7 +4,7 @@ use App\Models\Quiz;
 use App\Models\User;
 use App\Models\UserQuizAttempt;
 
-it('adds testing quiz', function () {
+it('adds testing quizzes', function () {
     //Assert
     $this->assertDatabaseCount(Quiz::class, 0);
 
@@ -16,7 +16,7 @@ it('adds testing quiz', function () {
 
 });
 
-it('adds testing user', function () {
+it('adds testing users', function () {
     //Assert
     $this->assertDatabaseCount(User::class, 0);
 

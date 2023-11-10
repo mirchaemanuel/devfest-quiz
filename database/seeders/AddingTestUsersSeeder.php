@@ -9,6 +9,12 @@ class AddingTestUsersSeeder extends Seeder
 {
     public function run()
     {
-        User::factory()->count(10)->create();
+        $user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'a@a',
+            'password' => bcrypt('password'),
+        ]);
+
+        User::factory()->count(9)->create();
     }
 }

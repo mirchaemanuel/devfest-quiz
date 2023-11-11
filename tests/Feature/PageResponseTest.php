@@ -9,7 +9,7 @@ it('gives back successful response for home page', function () {
 
 });
 
-it('gives successful response to logged user for dashboard page', function() {
+it('gives successful response to logged user for dashboard page', function () {
     // Arrange
     loginAsUser();
 
@@ -17,11 +17,11 @@ it('gives successful response to logged user for dashboard page', function() {
     get(route('pages.members.dashboard'))
         ->assertOk();
 
- });
+});
 
-it('gives redirect to login for dashboard page when not logged', function() {
+it('gives redirect to login for dashboard page when not logged', function () {
     // Act & Assert
     get(route('pages.members.dashboard'))
         ->assertRedirect(route('login'));
 
- });
+});

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageDashboardController;
 use App\Http\Controllers\PageHomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,5 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.members.dashboard');
-    })->name('pages.members.dashboard');
+    Route::get('/dashboard', [PageDashboardController::class, 'index'])->name('pages.members.dashboard');
 });

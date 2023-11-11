@@ -13,6 +13,7 @@ class QuizFactory extends Factory
     public function definition()
     {
         return [
+            'title' => $this->faker->sentence(rand(3, 7)),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

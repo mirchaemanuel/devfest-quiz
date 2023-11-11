@@ -53,3 +53,22 @@ it('has max score', function () {
         ]);
 
 });
+
+it('has play quiz link button', function () {
+    // Arrange
+    $quiz = Quiz::factory()
+        ->has(Question::factory()->count(5))
+        ->create();
+
+    // Act & Assert
+    Livewire::test('quiz-info-card', ['quiz' => $quiz])
+        ->assertOk()
+        ->assertSeeHtmlInOrder([
+            '<a',
+            'href="'.
+            route('pages.members.quiz.show', $quiz),
+            'wire:navigate',
+            __('Play quiz'),
+        ], false);
+
+});

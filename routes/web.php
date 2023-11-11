@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PageDashboardController;
 use App\Http\Controllers\PageHomeController;
+use App\Http\Controllers\PageQuizController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +24,5 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [PageDashboardController::class, 'index'])->name('pages.members.dashboard');
+    Route::get('/members/quiz/{quiz}', [PageQuizController::class, 'show'])->name('pages.members.quiz.show');
 });

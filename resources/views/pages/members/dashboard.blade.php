@@ -29,7 +29,7 @@
                     <h1 class="mt-2 text-2xl font-medium text-gray-900 dark:text-white">
                         {{ __('Quizzes') }}
                     </h1>
-                    <div class="mt-6 text-gray-500 dark:text-gray-800 leading-relaxed flex flex-wrap">
+                    <div class="mt-6 text-gray-500 dark:text-gray-800 leading-relaxed flex flex-wrap justify-center gap-2">
                         @foreach($quizzes as $quiz)
                             <livewire:quiz-info-card :quiz="$quiz" />
                         @endforeach

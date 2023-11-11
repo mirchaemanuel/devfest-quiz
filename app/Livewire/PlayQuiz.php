@@ -23,6 +23,10 @@ class PlayQuiz extends Component
 
     public bool $started = false;
 
+    public int $score = 0;
+
+    public int $totalAnswers = 0;
+
     public function mount()
     {
         $this->questions = $this->quiz->questions()->inRandomOrder(microtime())->get();

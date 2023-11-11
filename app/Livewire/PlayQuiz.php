@@ -23,6 +23,12 @@ class PlayQuiz extends Component
 
     public bool $started = false;
 
+    public bool $completed = false;
+
+    public int $score = 0;
+
+    public int $totalAnswers = 0;
+
     public function mount()
     {
         $this->questions = $this->quiz->questions()->inRandomOrder(microtime())->get();
@@ -39,6 +45,16 @@ class PlayQuiz extends Component
             'quiz_id' => $this->quiz->id,
         ]);
         $this->started = true;
+    }
+
+    public function terminateQuiz(): void
+    {
+        if ($this->userQuizAttempt !== null) {
+            $this->userQuizAttempt->update([
+                'completed_at' => now(),
+            ]);
+            $this->completed = true;
+        }
     }
 
     public function render(): View|\Illuminate\Foundation\Application|Factory|Application

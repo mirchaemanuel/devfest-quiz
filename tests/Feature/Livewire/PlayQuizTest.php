@@ -93,6 +93,22 @@ it('has true/false button disabled until quiz is not started', function () {
 
 });
 
+it('has true/false buttons disabled when quiz is completed', function () {
+    // Arrange
+    $question1 = createQuestion($this->quiz->id);
+
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->set('started', true)
+        ->set('completed', true)
+        ->assertSeeHtml([
+            '<button wire:click="markTrue('.$question1->id.')" disabled',
+            '<button wire:click="markFalse('.$question1->id.')" disabled',
+        ]);
+
+});
+
 it('can start a quiz', function () {
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
@@ -178,10 +194,37 @@ it('has not start button when quiz has been started', function () {
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
-        ->call('startQuiz')
+        ->set('started', true)
         ->assertDontSeeHtml(
             '<button wire:click="startQuiz"',
         );
+
+});
+
+it('has not terminate quiz button when quiz has been completed', function () {
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->set('started', true)
+        ->set('completed', true)
+        ->assertDontSeeHtml(
+            '<button wire:click="terminateQuiz"',
+        );
+
+});
+
+it('has go back to dashbaord button when quiz has been completed', function () {
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->set('started', true)
+        ->set('completed', true)
+        ->assertSeeHtmlInOrder([
+            '<a',
+            'href="'.route('pages.members.dashboard').'"',
+            'wire:navigate',
+            __('Back to dashboard'),
+        ]);
 
 });
 
@@ -241,5 +284,26 @@ it('shows number of answers 0 if quis has not been started', function () {
             __('Answers'),
             '0',
         ], false);
+
+});
+
+it('can mark question has answered', function () {
+    // Arrange
+
+    // Act & Assert
+
+});
+
+it('disables buttons for answered question', function () {
+    // Arrange
+
+    // Act & Assert
+
+});
+
+it('completes quiz when all questions has been answered', function () {
+    // Arrange
+
+    // Act & Assert
 
 });

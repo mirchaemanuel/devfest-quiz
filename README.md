@@ -1,3 +1,5 @@
+![All tests](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/tests.yml/badge.svg)
+
 # DevFest Quiz Challenge
 
 Welcome to the DevFest Quiz Challenge - a gamified Laravel application where users can test their knowledge against a 

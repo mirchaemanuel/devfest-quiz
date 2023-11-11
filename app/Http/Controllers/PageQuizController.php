@@ -8,6 +8,6 @@ class PageQuizController extends Controller
 {
     public function show(Quiz $quiz)
     {
-        return 'pippo';
+        return view('pages.quiz.show', compact('quiz'));
     }
 }

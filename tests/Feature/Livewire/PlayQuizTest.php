@@ -43,3 +43,25 @@ it('has all the questions of the quiz', function () {
         ], false);
 
 });
+
+it('show true or false buttons besides each questions', function () {
+    // Arrange
+    $question1 = Question::factory()->create([
+        'quiz_id' => $this->quiz->id,
+        'question' => 'Question 1',
+    ]);
+
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->assertSeeHtmlInOrder([
+            $question1->question,
+            '<button',
+            'wire:click="markTrue('.$question1->id.')"',
+            '</button>',
+            '<button',
+            'wire:click="markFalse('.$question1->id.')"',
+            '</button>',
+        ]);
+
+});

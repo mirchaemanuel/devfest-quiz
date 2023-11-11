@@ -13,7 +13,7 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            'question' => $this->faker->sentence(rand(3, 7)),
+            'question' => $this->faker->sentence(rand(7, 15)),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

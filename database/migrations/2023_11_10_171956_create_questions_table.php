@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Quiz::class);
+            $table->string('question')->nullable(false);
             $table->integer('score')->nullable(false)->default(1);
             $table->timestamps();
         });

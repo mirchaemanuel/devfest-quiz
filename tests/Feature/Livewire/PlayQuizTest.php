@@ -4,6 +4,7 @@ use App\Livewire\PlayQuiz;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
+use App\Models\UserQuizAttempt;
 
 beforeEach(function () {
     $this->quiz = Quiz::factory()->create();
@@ -102,7 +103,7 @@ it('has true/false button disabled until quiz is not started', function () {
 
 });
 
-it('starts quiz', function () {
+it('can start a quiz', function () {
     // Arrange
     $question1 = Question::factory()->create([
         'quiz_id'  => $this->quiz->id,
@@ -116,6 +117,43 @@ it('starts quiz', function () {
     expect($this->user->quizzes->whereNotNull('pivot.created_at'))->toHaveCount(1);
 
 });
+
+it('can terminate a quiz', function () {
+    // Arrange
+    $question1 = Question::factory()->create([
+        'quiz_id'  => $this->quiz->id,
+        'question' => 'Question 1',
+    ]);
+    $this->user->quizzes()->attach(
+        $this->quiz,
+        [
+            'created_at' => now(),
+        ]
+    );
+
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->set('started', true)
+        ->set('userQuizAttempt', UserQuizAttempt::first())
+        ->call('terminateQuiz')
+        ->assertSet('completed', true);
+    expect($this->user->quizzes->whereNotNull('pivot.completed_at'))->toHaveCount(1);
+
+});
+
+it('cannot start a completed quiz', function() {
+    // Arrange
+
+    // Act & Assert
+
+ });
+
+it('cannot terminate a not started quiz', function() {
+    // Arrange
+
+    // Act & Assert
+
+ });
 
 it('has click true/false button enabled when quiz has been started', function () {
     // Arrange
@@ -186,8 +224,8 @@ it('has not terminate button when quiz has not been started', function () {
 
 });
 
-it('has confirmation request on terminate button', function() {
-   // Arrange
+it('has confirmation request on terminate button', function () {
+    // Arrange
     $question1 = Question::factory()->create([
         'quiz_id'  => $this->quiz->id,
         'question' => 'Question 1',
@@ -204,7 +242,7 @@ it('has confirmation request on terminate button', function() {
         );
 
 
- });
+});
 
 it('shows actual score 0 if quiz has not been started', function () {
     // Act & Assert

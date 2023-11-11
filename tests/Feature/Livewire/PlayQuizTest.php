@@ -11,6 +11,14 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
+function createQuestion(int $quizId, string $question = null): Question
+{
+    return Question::factory()->create([
+        'quiz_id' => $quizId,
+        'question' => $question ?? fake()->sentence(),
+    ]);
+}
+
 it('has questions section', function () {
     // Arrange
 
@@ -26,14 +34,8 @@ it('has questions section', function () {
 
 it('has all the questions of the quiz', function () {
     // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-    $question2 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 2',
-    ]);
+    $question1 = createQuestion($this->quiz->id);
+    $question2 = createQuestion($this->quiz->id);
 
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
@@ -47,10 +49,7 @@ it('has all the questions of the quiz', function () {
 
 it('show true or false buttons besides each questions', function () {
     // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
+    $question1 = createQuestion($this->quiz->id);
 
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
@@ -58,22 +57,16 @@ it('show true or false buttons besides each questions', function () {
         ->assertSeeHtmlInOrder([
             $question1->question,
             '<button',
-            'wire:click="markTrue(' . $question1->id . ')"',
+            'wire:click="markTrue('.$question1->id.')"',
             '</button>',
             '<button',
-            'wire:click="markFalse(' . $question1->id . ')"',
+            'wire:click="markFalse('.$question1->id.')"',
             '</button>',
         ]);
 
 });
 
 it('has start quiz button', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
@@ -88,28 +81,19 @@ it('has start quiz button', function () {
 
 it('has true/false button disabled until quiz is not started', function () {
     // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
+    $question1 = createQuestion($this->quiz->id);
 
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSeeHtml([
-            '<button wire:click="markTrue(' . $question1->id . ')" disabled',
-            '<button wire:click="markFalse(' . $question1->id . ')" disabled',
+            '<button wire:click="markTrue('.$question1->id.')" disabled',
+            '<button wire:click="markFalse('.$question1->id.')" disabled',
         ]);
 
 });
 
 it('can start a quiz', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->call('startQuiz')
@@ -120,10 +104,6 @@ it('can start a quiz', function () {
 
 it('can terminate a quiz', function () {
     // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
     $this->user->quizzes()->attach(
         $this->quiz,
         [
@@ -141,45 +121,60 @@ it('can terminate a quiz', function () {
 
 });
 
-it('cannot start a completed quiz', function() {
+it('cannot start a completed quiz', function () {
     // Arrange
+    $this->user->quizzes()->attach(
+        $this->quiz,
+        [
+            'created_at' => now(),
+            'completed_at' => now(),
+        ]
+    );
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->set('started', true)
+        ->set('completed', true)
+        ->call('startQuiz')
+        ->assertSet('started', true)
+        ->assertSet('completed', true);
+});
 
- });
-
-it('cannot terminate a not started quiz', function() {
+it('cannot terminate a not started quiz', function () {
     // Arrange
+    $this->user->quizzes()->attach(
+        $this->quiz,
+        [
+            'created_at' => now(),
+        ]
+    );
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->set('started', false)
+        ->call('terminateQuiz')
+        ->assertSet('started', false)
+        ->assertSet('completed', false);
+    expect(UserQuizAttempt::first())->completed_at->toBeNull();
 
- });
+});
 
 it('has click true/false button enabled when quiz has been started', function () {
     // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
+    $question1 = createQuestion($this->quiz->id);
 
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
         ->call('startQuiz')
         ->assertDontSeeHtml([
-            '<button wire:click="markTrue(' . $question1->id . ')" disabled',
-            '<button wire:click="markFalse(' . $question1->id . ')" disabled',
+            '<button wire:click="markTrue('.$question1->id.')" disabled',
+            '<button wire:click="markFalse('.$question1->id.')" disabled',
         ]);
 
 });
 
 it('has not start button when quiz has been started', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
@@ -191,30 +186,18 @@ it('has not start button when quiz has been started', function () {
 });
 
 it('has terminate quiz button when quiz has been started', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
         ->call('startQuiz')
         ->assertSeeHtmlInOrder([
-                '<button wire:click="terminateQuiz"',
-                __('Terminate quiz'),]
+            '<button wire:click="terminateQuiz"',
+            __('Terminate quiz'), ]
         );
 
 });
 
 it('has not terminate button when quiz has not been started', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
@@ -225,22 +208,15 @@ it('has not terminate button when quiz has not been started', function () {
 });
 
 it('has confirmation request on terminate button', function () {
-    // Arrange
-    $question1 = Question::factory()->create([
-        'quiz_id'  => $this->quiz->id,
-        'question' => 'Question 1',
-    ]);
-
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
         ->call('startQuiz')
         ->assertSeeHtmlInOrder([
-                '<button wire:click="terminateQuiz"',
-                'wire:confirm',
-                __('Terminate quiz'),]
+            '<button wire:click="terminateQuiz"',
+            'wire:confirm',
+            __('Terminate quiz'), ]
         );
-
 
 });
 

@@ -31,3 +31,19 @@ it('has score column with default value 1', function () {
         ->toBeInt()
         ->toBe(1);
 });
+
+it('has solution column with expected', function (bool $result) {
+    // Arrange
+    $quiz = Quiz::factory()->create();
+    $question = Question::factory()->create([
+        'quiz_id' => $quiz->id,
+        'score' => 10,
+        'solution' => $result,
+    ]);
+
+    // Act & Assert
+    expect($question->solution)
+        ->toBeBool()
+        ->toBe($result);
+
+})->with([true, false]);

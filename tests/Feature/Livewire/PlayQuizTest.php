@@ -11,11 +11,13 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-function createQuestion(int $quizId, string $question = null): Question
+function createQuestion(int $quizId, string $question = null, int $score = 1, bool $solution = false): Question
 {
     return Question::factory()->create([
         'quiz_id' => $quizId,
         'question' => $question ?? fake()->sentence(),
+        'score' => $score,
+        'solution' => $solution,
     ]);
 }
 
@@ -86,9 +88,15 @@ it('has true/false button disabled until quiz is not started', function () {
     // Act & Assert
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
-        ->assertSeeHtml([
-            '<button wire:click="markTrue('.$question1->id.')" disabled',
-            '<button wire:click="markFalse('.$question1->id.')" disabled',
+        ->assertSeeHtmlInOrder([
+            '<tr id="question-'.$question1->id.'"',
+            '<td id="answer-true-'.$question1->id.'"',
+            '<button wire:click="markTrue('.$question1->id.')"',
+            'disabled="disabled"',
+            '<td id="answer-false-'.$question1->id.'"',
+            '<button wire:click="markFalse('.$question1->id.')"',
+            'disabled="disabled"',
+            '<td id="result-'.$question1->id.'"',
         ]);
 
 });
@@ -102,9 +110,15 @@ it('has true/false buttons disabled when quiz is completed', function () {
         ->assertOk()
         ->set('started', true)
         ->set('completed', true)
-        ->assertSeeHtml([
-            '<button wire:click="markTrue('.$question1->id.')" disabled',
-            '<button wire:click="markFalse('.$question1->id.')" disabled',
+        ->assertSeeHtmlInOrder([
+            '<tr id="question-'.$question1->id.'"',
+            '<td id="answer-true-'.$question1->id.'"',
+            '<button wire:click="markTrue('.$question1->id.')"',
+            'disabled="disabled"',
+            '<td id="answer-false-'.$question1->id.'"',
+            '<button wire:click="markFalse('.$question1->id.')"',
+            'disabled="disabled"',
+            '<td id="result-'.$question1->id.'"',
         ]);
 
 });
@@ -287,21 +301,116 @@ it('shows number of answers 0 if quis has not been started', function () {
 
 });
 
-it('can mark question has answered', function () {
+it('marks question answered true with markTrue', function () {
     // Arrange
+    $question = createQuestion($this->quiz->id);
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call('markTrue', $question->id)
+        ->assertSet('answers', [
+            $question->id => true,
+        ]);
 
 });
 
-it('disables buttons for answered question', function () {
+it('marks question answered false with markFalse', function () {
     // Arrange
+    $question = createQuestion($this->quiz->id);
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call('markFalse', $question->id)
+        ->assertSet('answers', [
+            $question->id => false,
+        ]);
 
 });
+
+it('disables true/false buttons for answered question', function (string $markAction) {
+    // Arrange
+    $question = createQuestion($this->quiz->id);
+
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call($markAction, $question->id)
+        ->assertSeeHtmlInOrder([
+            '<tr id="question-'.$question->id.'"',
+            '<td id="answer-true-'.$question->id.'"',
+            '<button wire:click="markTrue('.$question->id.')"',
+            'disabled="disabled"',
+            '<td id="answer-false-'.$question->id.'"',
+            '<button wire:click="markFalse('.$question->id.')"',
+            'disabled="disabled"',
+            '<td id="result-'.$question->id.'"',
+        ]);
+
+})->with([
+    'markTrue', 'markFalse',
+]);
+
+it('show expected question result for wrong answered question', function (bool $solution, string $markAction) {
+    // Arrange
+    $question = createQuestion($this->quiz->id, solution: $solution);
+
+    // Act & Assert
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call($markAction, $question->id)
+        ->assertSeeHtmlInOrder([
+            '<tr id="question-'.$question->id.'"',
+            '<td id="result-'.$question->id.'"',
+            '<span',
+            __('Incorrect'),
+            '</tr>',
+
+        ]);
+
+})->with([
+    [true, 'markFalse'],
+    [false, 'markTrue'],
+]);
+
+it('show expected question result for correct answered question', function (bool $solution, string $markAction) {
+    // Arrange
+    $question = createQuestion($this->quiz->id, solution: $solution);
+
+    // Act & Assert
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call($markAction, $question->id)
+        ->assertSeeHtmlInOrder([
+            '<tr id="question-'.$question->id.'"',
+            '<td id="result-'.$question->id.'"',
+            '<span',
+            __('Correct'),
+            '</tr>',
+
+        ]);
+
+})->with([
+    [true, 'markTrue'],
+    [false, 'markFalse'],
+]);
 
 it('completes quiz when all questions has been answered', function () {
+    // Arrange
+
+    // Act & Assert
+
+});
+
+it('updates the partial score when a question has been answered', function () {
     // Arrange
 
     // Act & Assert

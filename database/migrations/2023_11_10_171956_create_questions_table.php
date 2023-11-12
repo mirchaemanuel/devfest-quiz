@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignIdFor(Quiz::class);
             $table->string('question')->nullable(false);
             $table->integer('score')->nullable(false)->default(1);
+            $table->boolean('solution')->nullable(false);
             $table->timestamps();
         });
     }

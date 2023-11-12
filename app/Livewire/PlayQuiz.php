@@ -29,9 +29,24 @@ class PlayQuiz extends Component
 
     public int $totalAnswers = 0;
 
+    /**
+     * @var array  [question_id => answer] answered questions
+     */
+    public array $answers = [];
+
     public function mount()
     {
         $this->questions = $this->quiz->questions()->inRandomOrder(microtime())->get();
+    }
+
+    public function markTrue(int $questionId)
+    {
+        $this->answers[$questionId] = true;
+    }
+
+    public function markFalse(int $questionId)
+    {
+        $this->answers[$questionId] = false;
     }
 
     public function startQuiz(): void

@@ -14,6 +14,7 @@ class QuestionFactory extends Factory
     {
         return [
             'question' => $this->faker->sentence(rand(7, 15)),
+            'solution' => $this->faker->boolean(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

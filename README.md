@@ -2,10 +2,14 @@
 
 # DevFest Quiz App - "The Journey of a Commit"
 
+__IT IS JUST A DEMO PROJECT FOR THE SPEECH__
+
+__IT IS STILL UNDER ACTIVE DEVELOPMENT__
+
 ## About the Project
 
 This Laravel application, crafted for the Google DevFest Pescara 2023, serves as a practical demonstration for the talk
-titled "The Journey of a Commit," which will be presented by Mircha Emanuel D'Angelo, a senior full-stack developer, and
+titled "The Journey of a Commit", which will be presented by Mircha Emanuel D'Angelo, a senior full-stack developer, and
 Aurelio Forese, a cloud engineer for Netsons Srl. The project is designed to showcase the entire lifecycle of a commit -
 from inception to production deployment. This includes the development and deployment cycle, emphasizing DevOps
 principles and practices.

@@ -42,12 +42,12 @@ class PlayQuiz extends Component
         $this->maxScore = $this->questions->sum('score');
     }
 
-    public function markTrue(int $questionId)
+    private function answerQuestion(int $questionId, bool $answer): void
     {
-        $this->answers[$questionId] = true;
+        $this->answers[$questionId] = $answer;
         $this->totalAnswers++;
         $question = $this->questions->find($questionId);
-        if ($question->solution === true) {
+        if ($question->solution === $answer) {
             $this->score += $question->score;
         }
         if ($this->totalAnswers === $this->questions->count()) {
@@ -55,17 +55,14 @@ class PlayQuiz extends Component
         }
     }
 
-    public function markFalse(int $questionId)
+    public function markTrue(int $questionId): void
     {
-        $this->answers[$questionId] = false;
-        $this->totalAnswers++;
-        $question = $this->questions->find($questionId);
-        if ($question->solution === false) {
-            $this->score += $question->score;
-        }
-        if ($this->totalAnswers === $this->questions->count()) {
-            $this->terminateQuiz();
-        }
+        $this->answerQuestion($questionId, true);
+    }
+
+    public function markFalse(int $questionId): void
+    {
+        $this->answerQuestion($questionId, false);
     }
 
     public function startQuiz(): void
@@ -83,9 +80,10 @@ class PlayQuiz extends Component
 
     public function terminateQuiz(): void
     {
-        if ($this->userQuizAttempt !== null && $this->started && ! $this->completed) {
+        if ($this->userQuizAttempt !== null && $this->started && !$this->completed) {
             $this->userQuizAttempt->update([
                 'completed_at' => now(),
+                'score'        => $this->score,
             ]);
             $this->completed = true;
         }

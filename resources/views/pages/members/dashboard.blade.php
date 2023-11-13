@@ -18,7 +18,7 @@
                         <ul class="list-disc ml-8">
                             <li>{{ __('Quiz attempts: :count', ['count' => $totalCompletedQuizzes]) }}</li>
                             <li>{{ __('Last quiz attempt: :date', ['date' => $lastQuizAttemptDate]) }}</li>
-                            <li>{{ __('Total score: :score', ['score' => auth()->user()->totalScore]) }}</li>
+                            <li>{{ __('Total score: :score', ['score' => $totalScore]) }}</li>
                         </ul>
                     </div>
                 </section>

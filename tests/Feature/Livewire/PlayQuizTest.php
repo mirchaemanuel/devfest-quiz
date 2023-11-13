@@ -403,16 +403,103 @@ it('show expected question result for correct answered question', function (bool
     [false, 'markFalse'],
 ]);
 
-it('completes quiz when all questions has been answered', function () {
+describe('score', function () {
+    it('is 0 when the quiz has not been started', function () {
+        // Arrange
+        $question = createQuestion($this->quiz->id, score: 2, solution: true);
+
+        // Act & Assert
+        Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+            ->assertOk()
+            ->assertSet('score', 0);
+
+    });
+
+    it('increments when a correct answer has been placed', function (bool $answer, string $action) {
+        // Arrange
+        $expectedScore = 2;
+        $question = createQuestion($this->quiz->id, score: $expectedScore, solution: $answer);
+
+        // Act & Assert
+        Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+            ->assertOk()
+            ->assertSet('score', 0)
+            ->call('startQuiz')
+            ->call($action, $question->id)
+            ->assertSet('score', $expectedScore);
+
+    })->with(
+        [
+            [true, 'markTrue'],
+            [false, 'markFalse'],
+        ]
+    );
+});
+
+describe('totalAnswers', function () {
+    it('is 0 when the quiz has not been started', function () {
+        // Arrange
+        $question = createQuestion($this->quiz->id, score: 2, solution: true);
+
+        // Act & Assert
+        Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+            ->assertOk()
+            ->assertSet('totalAnswers', 0);
+
+    });
+
+    it('increments when a correct answer has been placed', function (string $action) {
+        // Arrange
+        $question1 = createQuestion($this->quiz->id);
+        $question2 = createQuestion($this->quiz->id);
+
+        // Act & Assert
+        Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+            ->assertOk()
+            ->call('startQuiz')
+            ->call($action, $question1->id)
+            ->call($action, $question2->id)
+            ->assertSet('totalAnswers', 2);
+
+    })->with(
+        [
+            'markTrue',
+            'markFalse',
+        ]
+    );
+});
+
+it('shows maxScore value', function () {
     // Arrange
+    $question1 = createQuestion($this->quiz->id, score: 13);
+    $question2 = createQuestion($this->quiz->id, score: 19);
+
+    $maxScore = $question1->score + $question2->score;
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->assertSeeHtmlInOrder([
+            '<span id="score-max">',
+            $maxScore,
+            '</span>',
+        ]);
 
 });
 
-it('updates the partial score when a question has been answered', function () {
+it('completes quiz when all questions has been answered', function () {
     // Arrange
+    $question1 = createQuestion($this->quiz->id);
+    $question2 = createQuestion($this->quiz->id);
+    $question3 = createQuestion($this->quiz->id);
 
     // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->assertOk()
+        ->call('startQuiz')
+        ->call('markTrue', $question1->id)
+        ->call('markTrue', $question2->id)
+        ->call('markTrue', $question3->id)
+        ->assertSet('completed', true);
 
 });

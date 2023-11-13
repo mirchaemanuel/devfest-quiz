@@ -21,7 +21,7 @@
             </a>
         @endif
         <div class="font-bold text-base md:text-2xl">
-            <span>{{ __('Score') }}:</span><span>{{ $score }}</span>
+            <span>{{ __('Score') }}:</span><span>{{ $score }}</span><span id="score-max">/{{ $maxScore }}</span>
         </div>
         <div class="font-bold">
             <span>{{ __('Answers') }}:</span><span>{{ $totalAnswers }}</span>

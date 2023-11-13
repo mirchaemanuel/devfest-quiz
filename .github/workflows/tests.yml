@@ -2,9 +2,9 @@ name: tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "add-app-image-build-action" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "add-app-image-build-action" ]
 
 jobs:
   laravel-tests:

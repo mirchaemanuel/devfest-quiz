@@ -42,7 +42,7 @@ class PlayQuiz extends Component
         $this->maxScore = $this->questions->sum('score');
     }
 
-    private function answerQuestion(int $questionId, bool $answer)
+    private function answerQuestion(int $questionId, bool $answer): void
     {
         $this->answers[$questionId] = $answer;
         $this->totalAnswers++;
@@ -55,14 +55,14 @@ class PlayQuiz extends Component
         }
     }
 
-    public function markTrue(int $questionId)
+    public function markTrue(int $questionId): void
     {
         $this->answerQuestion($questionId, true);
     }
 
-    public function markFalse(int $questionId)
+    public function markFalse(int $questionId): void
     {
-       $this->answerQuestion($questionId, false);
+        $this->answerQuestion($questionId, false);
     }
 
     public function startQuiz(): void

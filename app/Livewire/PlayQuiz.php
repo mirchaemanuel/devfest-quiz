@@ -80,9 +80,10 @@ class PlayQuiz extends Component
 
     public function terminateQuiz(): void
     {
-        if ($this->userQuizAttempt !== null && $this->started && ! $this->completed) {
+        if ($this->userQuizAttempt !== null && $this->started && !$this->completed) {
             $this->userQuizAttempt->update([
                 'completed_at' => now(),
+                'score'        => $this->score,
             ]);
             $this->completed = true;
         }

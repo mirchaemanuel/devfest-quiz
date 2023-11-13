@@ -38,7 +38,7 @@ class PlayQuiz extends Component
 
     public function mount()
     {
-        $this->questions = $this->quiz->questions()->inRandomOrder(microtime())->get();
+        $this->questions = $this->quiz->questions()->orderBy('id')->get();
         $this->maxScore = $this->questions->sum('score');
     }
 

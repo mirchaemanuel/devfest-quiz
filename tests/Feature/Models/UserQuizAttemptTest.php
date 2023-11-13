@@ -33,3 +33,18 @@ it('has completed_at column', function () {
         ->toBeInstanceOf(Illuminate\Support\Carbon::class);
 
 });
+
+it('has ID column after create', function() {
+    // Arrange
+    $user = User::factory()->create();
+    $quiz = Quiz::factory()->create();
+
+    $userQuizAttempt = UserQuizAttempt::create([
+        'user_id' => $user->id,
+        'quiz_id' => $quiz->id,
+    ]);
+    // Act & Assert
+    expect($userQuizAttempt)->id->not->toBeNull()->toBe(1);
+
+
+ });

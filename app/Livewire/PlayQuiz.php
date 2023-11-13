@@ -19,8 +19,6 @@ class PlayQuiz extends Component
 
     public User $user;
 
-    public ?UserQuizAttempt $userQuizAttempt = null;
-
     public bool $started = false;
 
     public bool $completed = false;
@@ -36,10 +34,38 @@ class PlayQuiz extends Component
      */
     public array $answers = [];
 
+    public ?UserQuizAttempt $userQuizAttempt = null;
+
     public function mount()
     {
         $this->questions = $this->quiz->questions()->orderBy('id')->get();
         $this->maxScore = $this->questions->sum('score');
+    }
+
+    public function startQuiz(): void
+    {
+        if ($this->userQuizAttempt !== null) {
+            //quiz already started
+            return;
+        }
+        $this->userQuizAttempt = UserQuizAttempt::create([
+            'user_id' => $this->user->id,
+            'quiz_id' => $this->quiz->id,
+        ]);
+        $this->started = true;
+    }
+
+    public function terminateQuiz(): void
+    {
+        if ($this->userQuizAttempt !== null && $this->started && !$this->completed) {
+            ray('terminate');
+
+            $this->userQuizAttempt->completed_at = now();
+            $this->userQuizAttempt->score = $this->score;
+            $this->userQuizAttempt->save();
+
+            $this->completed = true;
+        }
     }
 
     private function answerQuestion(int $questionId, bool $answer): void
@@ -63,30 +89,6 @@ class PlayQuiz extends Component
     public function markFalse(int $questionId): void
     {
         $this->answerQuestion($questionId, false);
-    }
-
-    public function startQuiz(): void
-    {
-        if ($this->userQuizAttempt !== null) {
-            //quiz already started
-            return;
-        }
-        $this->userQuizAttempt = UserQuizAttempt::create([
-            'user_id' => $this->user->id,
-            'quiz_id' => $this->quiz->id,
-        ]);
-        $this->started = true;
-    }
-
-    public function terminateQuiz(): void
-    {
-        if ($this->userQuizAttempt !== null && $this->started && !$this->completed) {
-            $this->userQuizAttempt->update([
-                'completed_at' => now(),
-                'score'        => $this->score,
-            ]);
-            $this->completed = true;
-        }
     }
 
     public function render(): View|\Illuminate\Foundation\Application|Factory|Application

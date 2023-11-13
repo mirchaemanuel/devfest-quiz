@@ -12,7 +12,7 @@
                 <span>{{ __('Max score') }}:</span> <span class="font-medium">{{ $quiz->questions->sum('score') }}</span>
             </div>
             <div class="w-full text-right">
-                <a class="font-extrabold text-xl text-gray-700 hover:underline text-right cursor-pointer"
+                <a class="font-extrabold text-2xl hover:underline text-right cursor-pointer text-blue-600"
                    href="{{ route('pages.members.quiz.show', $quiz) }}" wire:navigate>
                     >{{ __('Play quiz') }}
                 </a>

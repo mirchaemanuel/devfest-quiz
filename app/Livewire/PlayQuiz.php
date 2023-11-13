@@ -27,6 +27,8 @@ class PlayQuiz extends Component
 
     public int $score = 0;
 
+    public int $maxScore = 0;
+
     public int $totalAnswers = 0;
 
     /**
@@ -37,16 +39,33 @@ class PlayQuiz extends Component
     public function mount()
     {
         $this->questions = $this->quiz->questions()->inRandomOrder(microtime())->get();
+        $this->maxScore = $this->questions->sum('score');
     }
 
     public function markTrue(int $questionId)
     {
         $this->answers[$questionId] = true;
+        $this->totalAnswers++;
+        $question = $this->questions->find($questionId);
+        if ($question->solution === true) {
+            $this->score += $question->score;
+        }
+        if ($this->totalAnswers === $this->questions->count()) {
+            $this->terminateQuiz();
+        }
     }
 
     public function markFalse(int $questionId)
     {
         $this->answers[$questionId] = false;
+        $this->totalAnswers++;
+        $question = $this->questions->find($questionId);
+        if ($question->solution === false) {
+            $this->score += $question->score;
+        }
+        if ($this->totalAnswers === $this->questions->count()) {
+            $this->terminateQuiz();
+        }
     }
 
     public function startQuiz(): void

@@ -45,17 +45,31 @@
             @foreach($questions as $question)
                 <tr id="question-{{ $question->id }}" class="even:bg-gray-50">
                     <td class="py-4 pl-4 pr-3 text-base font-medium text-gray-900 sm:pl-3">{{ $question->question }}</td>
-                    <td id="answer-true-{{ $question->id }}" class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
+                    <td id="answer-true-{{ $question->id }}"
+                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
                         <button wire:click="markTrue({{ $question->id }})"
-                                @if(!$started || $completed || array_key_exists($question->id, $answers))disabled="disabled" @endif
-                                class="bg-green-500 hover:bg-green-700 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded">
+                                @if(!$started || $completed || array_key_exists($question->id, $answers))
+                                    disabled="disabled"
+                                @endif
+                                @if(array_key_exists($question->id, $answers) && $answers[$question->id])
+                                    data-answered="{{ $question->solution ? '1' : '0' }}"
+                                @endif
+                                class="bg-green-500 hover:bg-green-700 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded
+                                       data-[answered]:border-2 data-[answered='0']:border-red-800 data-[answered='1']:border-green-800">
                             {{ __('True') }}
                         </button>
                     </td>
-                    <td id="answer-false-{{ $question->id }}" class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
+                    <td id="answer-false-{{ $question->id }}"
+                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
                         <button wire:click="markFalse({{ $question->id }})"
-                                @if(!$started || $completed || array_key_exists($question->id, $answers))disabled="disabled" @endif
-                                class="bg-red-500 hover:bg-red-700 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded">
+                                @if(!$started || $completed || array_key_exists($question->id, $answers))
+                                    disabled="disabled"
+                                @endif
+                                @if(array_key_exists($question->id, $answers) && !$answers[$question->id])
+                                    data-answered="{{ $question->solution ? '0' : '1' }}"
+                                @endif
+                                class="bg-red-500 hover:bg-red-700 disabled:bg-gray-300 text-white font-bold py-2 px-4 rounded
+                                       data-[answered]:border-2 data-[answered='0']:border-red-800 data-[answered='1']:border-green-800">
                             {{ __('False') }}
                         </button>
                     </td>
@@ -64,10 +78,8 @@
                         @if(array_key_exists($question->id, $answers))
                             @if($answers[$question->id] === $question->solution)
                                 <span class="text-green-500">{{ __('Correct') }}</span>
-                                <span>{{ $question->solution ? __('True') : __('False') }}</span>
                             @else
                                 <span class="text-red-500">{{ __('Incorrect') }}</span>
-                                <span>{{ $question->solution ? __('True') : __('False') }}</span>
                             @endif
                         @endif
                     </td>

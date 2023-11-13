@@ -24,7 +24,7 @@ class AddingTestQuizAttemptsSeeder extends Seeder
             User::all()->each(function (User $user) use ($quizzes) {
                 $user->quizzes()->attach($quizzes->random(2)->pluck('id')->toArray(),
                     [
-                        'score'        => rand(0, 100),
+                        'score' => rand(0, 100),
                         'completed_at' => now()->subDays(rand(0, 30)),
                     ]);
             });

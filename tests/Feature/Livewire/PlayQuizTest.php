@@ -14,9 +14,9 @@ beforeEach(function () {
 function createQuestion(int $quizId, string $question = null, int $score = 1, bool $solution = false): Question
 {
     return Question::factory()->create([
-        'quiz_id'  => $quizId,
+        'quiz_id' => $quizId,
         'question' => $question ?? fake()->sentence(),
-        'score'    => $score,
+        'score' => $score,
         'solution' => $solution,
     ]);
 }
@@ -59,10 +59,10 @@ it('show true or false buttons besides each questions', function () {
         ->assertSeeHtmlInOrder([
             $question1->question,
             '<button',
-            'wire:click="markTrue(' . $question1->id . ')"',
+            'wire:click="markTrue('.$question1->id.')"',
             '</button>',
             '<button',
-            'wire:click="markFalse(' . $question1->id . ')"',
+            'wire:click="markFalse('.$question1->id.')"',
             '</button>',
         ]);
 
@@ -89,14 +89,14 @@ it('has true/false button disabled until quiz is not started', function () {
     Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSeeHtmlInOrder([
-            '<tr id="question-' . $question1->id . '"',
-            '<td id="answer-true-' . $question1->id . '"',
-            '<button wire:click="markTrue(' . $question1->id . ')"',
+            '<tr id="question-'.$question1->id.'"',
+            '<td id="answer-true-'.$question1->id.'"',
+            '<button wire:click="markTrue('.$question1->id.')"',
             'disabled="disabled"',
-            '<td id="answer-false-' . $question1->id . '"',
-            '<button wire:click="markFalse(' . $question1->id . ')"',
+            '<td id="answer-false-'.$question1->id.'"',
+            '<button wire:click="markFalse('.$question1->id.')"',
             'disabled="disabled"',
-            '<td id="result-' . $question1->id . '"',
+            '<td id="result-'.$question1->id.'"',
         ]);
 
 });
@@ -111,14 +111,14 @@ it('has true/false buttons disabled when quiz is completed', function () {
         ->set('started', true)
         ->set('completed', true)
         ->assertSeeHtmlInOrder([
-            '<tr id="question-' . $question1->id . '"',
-            '<td id="answer-true-' . $question1->id . '"',
-            '<button wire:click="markTrue(' . $question1->id . ')"',
+            '<tr id="question-'.$question1->id.'"',
+            '<td id="answer-true-'.$question1->id.'"',
+            '<button wire:click="markTrue('.$question1->id.')"',
             'disabled="disabled"',
-            '<td id="answer-false-' . $question1->id . '"',
-            '<button wire:click="markFalse(' . $question1->id . ')"',
+            '<td id="answer-false-'.$question1->id.'"',
+            '<button wire:click="markFalse('.$question1->id.')"',
             'disabled="disabled"',
-            '<td id="result-' . $question1->id . '"',
+            '<td id="result-'.$question1->id.'"',
         ]);
 
 });
@@ -156,7 +156,7 @@ it('cannot start a completed quiz', function () {
     $this->user->quizzes()->attach(
         $this->quiz,
         [
-            'created_at'   => now(),
+            'created_at' => now(),
             'completed_at' => now(),
         ]
     );
@@ -198,8 +198,8 @@ it('has click true/false button enabled when quiz has been started', function ()
         ->assertOk()
         ->call('startQuiz')
         ->assertDontSeeHtml([
-            '<button wire:click="markTrue(' . $question1->id . ')" disabled',
-            '<button wire:click="markFalse(' . $question1->id . ')" disabled',
+            '<button wire:click="markTrue('.$question1->id.')" disabled',
+            '<button wire:click="markFalse('.$question1->id.')" disabled',
         ]);
 
 });
@@ -235,7 +235,7 @@ it('has go back to dashbaord button when quiz has been completed', function () {
         ->set('completed', true)
         ->assertSeeHtmlInOrder([
             '<a',
-            'href="' . route('pages.members.dashboard') . '"',
+            'href="'.route('pages.members.dashboard').'"',
             'wire:navigate',
             __('Back to dashboard'),
         ]);
@@ -248,8 +248,8 @@ it('has terminate quiz button when quiz has been started', function () {
         ->assertOk()
         ->call('startQuiz')
         ->assertSeeHtmlInOrder([
-                '<button wire:click="terminateQuiz"',
-                __('Terminate quiz'),]
+            '<button wire:click="terminateQuiz"',
+            __('Terminate quiz'), ]
         );
 
 });
@@ -270,9 +270,9 @@ it('has confirmation request on terminate button', function () {
         ->assertOk()
         ->call('startQuiz')
         ->assertSeeHtmlInOrder([
-                '<button wire:click="terminateQuiz"',
-                'wire:confirm',
-                __('Terminate quiz'),]
+            '<button wire:click="terminateQuiz"',
+            'wire:confirm',
+            __('Terminate quiz'), ]
         );
 
 });
@@ -341,14 +341,14 @@ it('disables true/false buttons for answered question', function (string $markAc
         ->call('startQuiz')
         ->call($markAction, $question->id)
         ->assertSeeHtmlInOrder([
-            '<tr id="question-' . $question->id . '"',
-            '<td id="answer-true-' . $question->id . '"',
-            '<button wire:click="markTrue(' . $question->id . ')"',
+            '<tr id="question-'.$question->id.'"',
+            '<td id="answer-true-'.$question->id.'"',
+            '<button wire:click="markTrue('.$question->id.')"',
             'disabled="disabled"',
-            '<td id="answer-false-' . $question->id . '"',
-            '<button wire:click="markFalse(' . $question->id . ')"',
+            '<td id="answer-false-'.$question->id.'"',
+            '<button wire:click="markFalse('.$question->id.')"',
             'disabled="disabled"',
-            '<td id="result-' . $question->id . '"',
+            '<td id="result-'.$question->id.'"',
         ]);
 
 })->with([
@@ -366,8 +366,8 @@ it('show expected question result for wrong answered question', function (bool $
         ->call('startQuiz')
         ->call($markAction, $question->id)
         ->assertSeeHtmlInOrder([
-            '<tr id="question-' . $question->id . '"',
-            '<td id="result-' . $question->id . '"',
+            '<tr id="question-'.$question->id.'"',
+            '<td id="result-'.$question->id.'"',
             '<span',
             __('Incorrect'),
             '</tr>',
@@ -390,8 +390,8 @@ it('show expected question result for correct answered question', function (bool
         ->call('startQuiz')
         ->call($markAction, $question->id)
         ->assertSeeHtmlInOrder([
-            '<tr id="question-' . $question->id . '"',
-            '<td id="result-' . $question->id . '"',
+            '<tr id="question-'.$question->id.'"',
+            '<td id="result-'.$question->id.'"',
             '<span',
             __('Correct'),
             '</tr>',

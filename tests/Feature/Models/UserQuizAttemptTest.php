@@ -34,7 +34,7 @@ it('has completed_at column', function () {
 
 });
 
-it('has ID column after create', function() {
+it('has ID column after create', function () {
     // Arrange
     $user = User::factory()->create();
     $quiz = Quiz::factory()->create();
@@ -46,5 +46,4 @@ it('has ID column after create', function() {
     // Act & Assert
     expect($userQuizAttempt)->id->not->toBeNull()->toBe(1);
 
-
- });
+});

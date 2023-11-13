@@ -9,6 +9,9 @@ class AddingTestQuizzesSeeder extends Seeder
 {
     public function run()
     {
+        if(Quiz::count() > 0) {
+            return;
+        }
 
         //        Quiz::factory()
         //            ->has(Question::factory()->count(5))

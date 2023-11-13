@@ -86,14 +86,14 @@ it('adds testing quiz attempts only once', function () {
     //  Assert
     $this->assertDatabaseCount(UserQuizAttempt::class, 20);
 
-        // Act
+    // Act
     $this->artisan('db:seed');
 
     //  Assert
     $this->assertDatabaseCount(UserQuizAttempt::class, 20);
 });
 
-it('adds testing quiz attempts only on local and test environment', function() {
+it('adds testing quiz attempts only on local and test environment', function () {
     // Arrange
     App::partialMock()->shouldReceive('environment')->andReturn('production');
 
@@ -106,4 +106,4 @@ it('adds testing quiz attempts only on local and test environment', function() {
     //  Assert
     $this->assertDatabaseCount(UserQuizAttempt::class, 0);
 
- });
+});

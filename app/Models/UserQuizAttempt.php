@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class UserQuizAttempt extends Model
+use Illuminate\Database\Eloquent\Relations\Pivot;
+
+class UserQuizAttempt extends Pivot
 {
     protected $table = 'user_quiz_attempts';
 
-    protected $fillable = [
-        'user_id',
-        'quiz_id',
-    ];
+    public $incrementing = true;
 
     protected $casts = [
         'completed_at' => 'datetime',

@@ -1,4 +1,4 @@
-name: phpdocs-delpoy
+name: "Build Base PHP Image"
 
 on: workflow_dispatch
 

@@ -2,9 +2,9 @@ name: tests
 
 on:
   push:
-    branches: [ "master", "add-app-image-build-action" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "master", "add-app-image-build-action" ]
+    branches: [ "master" ]
 
 env:
   REGISTRY: ghcr.io
@@ -72,7 +72,7 @@ jobs:
         with:
           context: .
           build-args: |
-            BASE_PHP_IMAGE=${{ env.REGISTRY }}/${{ github.repository }}-base
+            BASE_PHP_IMAGE=${{ env.REGISTRY }}/${{ github.repository }}-php
             BASE_PHP_IMAGE_VERSION=latest
           push: true
           pull: true

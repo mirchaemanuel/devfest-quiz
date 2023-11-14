@@ -1,15 +1,5 @@
-FROM node:18-alpine AS node
-ARG NODE_USER="node"
-ARG APPROOT="/app"
-WORKDIR $APPROOT
-COPY --chown=${NODE_USER}:${NODE_USER} . .
-RUN chown --recursive ${NODE_USER}:${NODE_USER} ${APPROOT}
-USER ${NODE_USER}
-RUN npm ci \
-&& npm run build \
-&& rm -rf node_modules
-
-ARG BASE_PHP_IMAGE=ghcr.io/mirchaemanuel/devfest-quiz:latest
+# syntax=docker/dockerfile:1
+ARG BASE_PHP_IMAGE=ghcr.io/mirchaemanuel/devfest-quiz
 ARG BASE_PHP_IMAGE_VERSION=latest
 FROM ${BASE_PHP_IMAGE}:${BASE_PHP_IMAGE_VERSION} as app
 
@@ -32,3 +22,14 @@ RUN chown --recursive ${USERNAME}:${USERNAME} ${APPROOT}
 USER $USERNAME
 RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
 USER root
+
+FROM node:18-alpine AS node
+ARG NODE_USER="node"
+ARG APPROOT="/app"
+WORKDIR $APPROOT
+COPY --chown=${NODE_USER}:${NODE_USER} . .
+RUN chown --recursive ${NODE_USER}:${NODE_USER} ${APPROOT}
+USER ${NODE_USER}
+RUN npm ci \
+&& npm run build \
+&& rm -rf node_modules

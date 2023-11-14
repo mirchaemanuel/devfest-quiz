@@ -5,7 +5,7 @@ on: workflow_dispatch
 jobs:
   build-base-image:
     runs-on: ubuntu-latest
-    name: Build PHP Docs
+    name: Build Base PHP Image
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

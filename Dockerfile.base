@@ -1,0 +1,23 @@
+FROM php:8.2.11-apache-bullseye
+
+# Install system dependencies
+RUN apt update -y && apt install curl git zip mariadb-client netcat icu-devtools libicu-dev libpng-dev libzip-dev zlib1g-dev -y
+RUN docker-php-ext-configure pcntl --enable-pcntl
+RUN docker-php-ext-install pdo_mysql mysqli bcmath opcache intl gd zip exif pcntl
+RUN pecl install igbinary && docker-php-ext-enable igbinary
+# Install Redis
+RUN echo -e "\n" | pecl install redis \
+    && docker-php-ext-enable redis.so
+
+# Install composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+RUN apt install -y libzip-dev && docker-php-ext-install zip
+
+#Cleanup Image
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN a2enmod rewrite
+RUN a2enmod headers
+RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf && \
+    sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/sites-available/000-default.conf

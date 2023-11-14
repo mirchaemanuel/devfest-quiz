@@ -1,4 +1,4 @@
-[![tests](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/app.yml/badge.svg)](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/app.yml)[![Build Base PHP Image](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/build-base-php-image.yaml/badge.svg)](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/build-base-php-image.yaml)
+[![tests](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/app.yml/badge.svg?branch=master)](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/app.yml)[![Build Base PHP Image](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/build-base-php-image.yaml/badge.svg)](https://github.com/mirchaemanuel/devfest-quiz/actions/workflows/build-base-php-image.yaml)
 
 # DevFest Quiz App - "The Journey of a Commit"
 

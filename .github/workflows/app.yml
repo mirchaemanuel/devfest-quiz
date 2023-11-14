@@ -2,9 +2,9 @@ name: tests
 
 on:
   push:
-    branches: [ "master", "add-app-image-build-action" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "master", "add-app-image-build-action" ]
+    branches: [ "master" ]
 
 env:
   REGISTRY: ghcr.io

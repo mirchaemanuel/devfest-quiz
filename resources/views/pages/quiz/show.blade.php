@@ -14,8 +14,8 @@
                     <h1 class="mt-2 text-2xl font-medium text-gray-900 dark:text-white">
                         {{ __('Instructions') }}
                     </h1>
-                    <div class="mt-6 text-gray-500 dark:text-gray-800 leading-relaxed">
-                        Lorem ipsum dolor sit amet
+                    <div class="mt-6 text-gray-500 dark:text-gray-200 leading-relaxed">
+                        Click "Start quiz" to begin the quiz. You earn point for each correct answer. You can terminate the quiz at any time.
                     </div>
                 </section>
             </div>

@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_PHP_IMAGE=ghcr.io/mirchaemanuel/devfest-quiz
+ARG BASE_PHP_IMAGE=ghcr.io/mirchaemanuel/devfest-quiz-php
 ARG BASE_PHP_IMAGE_VERSION=latest
 FROM ${BASE_PHP_IMAGE}:${BASE_PHP_IMAGE_VERSION} as app
 
@@ -8,7 +8,16 @@ ARG APPROOT="/app"
 ENV APACHE_DOCUMENT_ROOT ${APPROOT}/public
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY 99-netsons.ini $PHP_INI_DIR/conf.d/
+
+RUN <<EOF cat >> $PHP_INI_DIR/conf.d/99-config.ini
+upload_max_filesize=1G
+post_max_size=1G
+max_execution_time=300
+max_input_time=300
+memory_limit=1G
+max_input_vars=10000
+EOF
+
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf

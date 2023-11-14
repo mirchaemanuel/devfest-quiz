@@ -151,6 +151,23 @@ it('can terminate a quiz', function () {
 
 });
 
+it('cannot start if user quiz attempt is not null', function() {
+    // Arrange
+    $this->user->quizzes()->attach(
+        $this->quiz,
+        [
+            'created_at' => now(),
+            'completed_at' => now(),
+        ]
+    );
+    // Act & Assert
+    Livewire::test(PlayQuiz::class, ['quiz' => $this->quiz, 'user' => $this->user])
+        ->set('userQuizAttempt', UserQuizAttempt::first())
+        ->call('startQuiz')
+        ->assertSet('started', false);
+
+ });
+
 it('cannot start a completed quiz', function () {
     // Arrange
     $this->user->quizzes()->attach(

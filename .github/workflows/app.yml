@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "master", "add-app-image-build-action" ]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   laravel-tests:
 

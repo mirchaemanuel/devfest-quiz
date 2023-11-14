@@ -36,7 +36,7 @@
                 </th>
                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-3">{{ __('True') }}</th>
                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-3">{{ __('False') }}</th>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-base font-semibold  sm:pl-3">
+                <th scope="col" class="hidden sm:block w-full py-3.5 pl-4 pr-3 text-left text-base font-semibold  sm:pl-3">
                     {{ __('Result') }}
                 </th>
             </tr>
@@ -46,7 +46,7 @@
                 <tr id="question-{{ $question->id }}" class="even:bg-gray-50 even:dark:bg-gray-500">
                     <td class="py-4 pl-4 pr-3 text-base font-medium  sm:pl-3">{{ $question->question }}</td>
                     <td id="answer-true-{{ $question->id }}"
-                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
+                        class="relative whitespace-nowrap py-1 sm:py-4 px-1 sm:pl-4 sm:pr-4 text-center text-sm font-medium3">
                         <button wire:click="markTrue({{ $question->id }})"
                                 @if(!$started || $completed || array_key_exists($question->id, $answers))
                                     disabled="disabled"
@@ -66,7 +66,7 @@
                         </button>
                     </td>
                     <td id="answer-false-{{ $question->id }}"
-                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-3">
+                        class="relative whitespace-nowrap py-1 sm:py-4 px-1 sm:pl-4 sm:pr-4 text-center text-sm font-medium">
                         <button wire:click="markFalse({{ $question->id }})"
                                 @if(!$started || $completed || array_key_exists($question->id, $answers))
                                     disabled="disabled"
@@ -85,8 +85,19 @@
                         </button>
                     </td>
                     <td id="result-{{ $question->id }}"
-                        class="whitespace-nowrap py-4 pl-4 pr-3 text-base font-medium sm:pl-3">
+                        class="hidden sm:table-cell whitespace-nowrap py-1 sm:py-4 px-1 sm:pl-4 sm:pr-4 text-center text-sm font-medium">
                         @if(array_key_exists($question->id, $answers))
+                            @if($answers[$question->id] === $question->solution)
+                                <span class="text-green-500 dark:text-green-300">{{ __('Correct') }}</span>
+                            @else
+                                <span class="text-red-500 dark:text-red-300">{{ __('Incorrect') }}</span>
+                            @endif
+                        @endif
+                    </td>
+                </tr>
+                <tr class="sm:hidden">
+                    <td colspan="3" class="whitespace-nowrap text-base font-medium text-center">
+                                                @if(array_key_exists($question->id, $answers))
                             @if($answers[$question->id] === $question->solution)
                                 <span class="text-green-500 dark:text-green-300">{{ __('Correct') }}</span>
                             @else

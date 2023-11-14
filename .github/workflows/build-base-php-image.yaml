@@ -1,7 +1,8 @@
 name: "Build Base PHP Image"
 
 on: workflow_dispatch
-
+env:
+  REGISTRY: ghcr.io
 jobs:
   build-base-image:
     runs-on: ubuntu-latest

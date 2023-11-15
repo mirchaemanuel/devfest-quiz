@@ -151,7 +151,7 @@ it('can terminate a quiz', function () {
 
 });
 
-it('cannot start if user quiz attempt is not null', function() {
+it('cannot start if user quiz attempt is not null', function () {
     // Arrange
     $this->user->quizzes()->attach(
         $this->quiz,
@@ -166,7 +166,7 @@ it('cannot start if user quiz attempt is not null', function() {
         ->call('startQuiz')
         ->assertSet('started', false);
 
- });
+});
 
 it('cannot start a completed quiz', function () {
     // Arrange

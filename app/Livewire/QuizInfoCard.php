@@ -13,7 +13,9 @@ class QuizInfoCard extends Component
     public Quiz $quiz;
 
     public User $user;
+
     public int $totalCompletedAttempts;
+
     public int $totalScore;
 
     public function mount(Quiz $quiz, User $user)
@@ -21,7 +23,7 @@ class QuizInfoCard extends Component
         if (is_null($user?->id)) {
             throw new InvalidArgumentException('User is required');
         }
-        if(is_null($quiz?->id)) {
+        if (is_null($quiz?->id)) {
             throw new InvalidArgumentException('Quiz is required');
         }
 

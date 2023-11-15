@@ -9,19 +9,19 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-it('requires user property', function() {
+it('requires user property', function () {
     // Arrange
     $quiz = Quiz::factory()->create();
 
     // Act & Assert
     Livewire::test(QuizInfoCard::class, ['quiz' => $quiz]);
 
- })->throws(\Exception::class);
+})->throws(\Exception::class);
 
-it('requires quiz property', function() {
+it('requires quiz property', function () {
 
     // Act & Assert
-        Livewire::test(QuizInfoCard::class, ['user' => $this->user]);
+    Livewire::test(QuizInfoCard::class, ['user' => $this->user]);
 
 })->throws(\Exception::class);
 
@@ -70,11 +70,11 @@ it('has max score', function () {
 
     $question1 = Question::factory()->create([
         'quiz_id' => 1,
-        'score'   => 5,
+        'score' => 5,
     ]);
     $question2 = Question::factory()->create([
         'quiz_id' => 1,
-        'score'   => 8,
+        'score' => 8,
     ]);
 
     // Act & Assert
@@ -98,7 +98,7 @@ it('has play quiz link button', function () {
         ->assertOk()
         ->assertSeeHtmlInOrder([
             '<a',
-            'href="' .
+            'href="'.
             route('pages.members.quiz.show', $quiz),
             'wire:navigate',
             __('Play quiz'),
@@ -148,8 +148,8 @@ it('set total score property for completed quiz of the user', function () {
 
 });
 
-it('set number of completed attempts property only for current quiz', function() {
-     // Arrange
+it('set number of completed attempts property only for current quiz', function () {
+    // Arrange
     $quiz = Quiz::factory()->create();
     $quiz2 = Quiz::factory()->create();
     $user = $this->user;
@@ -162,10 +162,10 @@ it('set number of completed attempts property only for current quiz', function()
         ->assertOk()
         ->assertSet('totalCompletedAttempts', 2);
 
- });
+});
 
-it('set total score property only for current quiz', function() {
-     // Arrange
+it('set total score property only for current quiz', function () {
+    // Arrange
     $quiz = Quiz::factory()->create();
     $quiz2 = Quiz::factory()->create();
     $user = $this->user;
@@ -178,9 +178,9 @@ it('set total score property only for current quiz', function() {
         ->assertOk()
         ->assertSet('totalScore', 13);
 
- });
+});
 
-it('shows number of completed attempts for the user', function() {
+it('shows number of completed attempts for the user', function () {
     // Arrange
     $quiz = Quiz::factory()->create();
     $user = $this->user;
@@ -194,9 +194,9 @@ it('shows number of completed attempts for the user', function() {
             '2',
         ]);
 
- });
+});
 
-it('shows number of achieved score for the user', function() {
+it('shows number of achieved score for the user', function () {
     // Arrange
     $quiz = Quiz::factory()->create();
     $user = $this->user;
@@ -210,4 +210,4 @@ it('shows number of achieved score for the user', function() {
             '13',
         ]);
 
- });
+});

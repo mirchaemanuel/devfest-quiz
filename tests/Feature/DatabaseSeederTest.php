@@ -64,11 +64,11 @@ it('adds testing users only once', function () {
 
 });
 
-it('adds testing users only on test and local environment', function() {
+it('adds testing users only on test and local environment', function () {
     // Arrange
     App::partialMock()->shouldReceive('environment')->andReturn('production');
 
-     //Assert
+    //Assert
     $this->assertDatabaseCount(User::class, 0);
 
     // Act
@@ -77,7 +77,7 @@ it('adds testing users only on test and local environment', function() {
     // Assert
     $this->assertDatabaseCount(User::class, 0);
 
- });
+});
 
 it('adds testing quiz attempts', function () {
     //Assert

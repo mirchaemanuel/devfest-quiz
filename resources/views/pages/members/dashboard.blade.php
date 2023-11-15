@@ -31,7 +31,7 @@
                     </h1>
                     <div class="mt-6  leading-relaxed flex flex-wrap justify-center gap-2">
                         @foreach($quizzes as $quiz)
-                            <livewire:quiz-info-card :quiz="$quiz" />
+                            <livewire:quiz-info-card :quiz="$quiz" :user="auth()->user()"/>
                         @endforeach
                     </div>
                 </section>

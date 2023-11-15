@@ -1,18 +1,36 @@
 <?php
 
+use App\Livewire\QuizInfoCard;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
-it('has quiz property', function () {
+beforeEach(function () {
+    $this->user = User::factory()->create();
+});
+
+it('requires user property', function() {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])
+    Livewire::test(QuizInfoCard::class, ['quiz' => $quiz]);
+
+ })->throws(\Exception::class);
+
+it('requires quiz property', function() {
+
+    // Act & Assert
+        Livewire::test(QuizInfoCard::class, ['user' => $this->user]);
+
+})->throws(\Exception::class);
+
+it('has quiz property', function () {
+    // Arrange
+    $quiz = Quiz::factory()->create();
+
+    // Act & Assert
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSet('quiz', $quiz);
 
@@ -25,7 +43,7 @@ it('has quiz name title', function () {
     ]);
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz])
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSee($quiz->title);
 
@@ -36,7 +54,7 @@ it('has number of questions', function () {
     $quiz = Quiz::factory()->has(Question::factory(10))->create();
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz])
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSeeInOrder([
             __('Questions'),
@@ -60,7 +78,7 @@ it('has max score', function () {
     ]);
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz])
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSeeInOrder([
             __('Max score'),
@@ -76,7 +94,7 @@ it('has play quiz link button', function () {
         ->create();
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz])
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
         ->assertSeeHtmlInOrder([
             '<a',
@@ -90,24 +108,19 @@ it('has play quiz link button', function () {
 
 it('has user property', function () {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
 
     // Act & Assert
-    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $this->user])
         ->assertOk()
-        ->assertSet('user', $user);
+        ->assertSet('user', $this->user);
 
 });
 
 it('set number of completed attempts property for the user', function () {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
+    $user = $this->user;
     $user->quizzes()->attach($quiz, ['completed_at' => now()]);
     $user->quizzes()->attach($quiz, ['completed_at' => now()]);
     $user->quizzes()->attach($quiz, ['completed_at' => null]);
@@ -121,10 +134,8 @@ it('set number of completed attempts property for the user', function () {
 
 it('set total score property for completed quiz of the user', function () {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
+    $user = $this->user;
 
     $user->quizzes()->attach($quiz, ['completed_at' => now(), 'score' => 5]);
     $user->quizzes()->attach($quiz, ['completed_at' => now(), 'score' => 8]);
@@ -137,12 +148,42 @@ it('set total score property for completed quiz of the user', function () {
 
 });
 
+it('set number of completed attempts property only for current quiz', function() {
+     // Arrange
+    $quiz = Quiz::factory()->create();
+    $quiz2 = Quiz::factory()->create();
+    $user = $this->user;
+    $user->quizzes()->attach($quiz, ['completed_at' => now()]);
+    $user->quizzes()->attach($quiz, ['completed_at' => now()]);
+    $user->quizzes()->attach($quiz2, ['completed_at' => now()]);
+
+    // Act & Assert
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])
+        ->assertOk()
+        ->assertSet('totalCompletedAttempts', 2);
+
+ });
+
+it('set total score property only for current quiz', function() {
+     // Arrange
+    $quiz = Quiz::factory()->create();
+    $quiz2 = Quiz::factory()->create();
+    $user = $this->user;
+    $user->quizzes()->attach($quiz, ['completed_at' => now(), 'score' => 5]);
+    $user->quizzes()->attach($quiz, ['completed_at' => now(), 'score' => 8]);
+    $user->quizzes()->attach($quiz2, ['completed_at' => now(), 'score' => 13]);
+
+    // Act & Assert
+    Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])
+        ->assertOk()
+        ->assertSet('totalScore', 13);
+
+ });
+
 it('shows number of completed attempts for the user', function() {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
+    $user = $this->user;
 
     // Act & Assert
     Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])
@@ -157,10 +198,8 @@ it('shows number of completed attempts for the user', function() {
 
 it('shows number of achieved score for the user', function() {
     // Arrange
-    $quiz = Quiz::factory()
-        ->create();
-    $user = User::factory()
-        ->create();
+    $quiz = Quiz::factory()->create();
+    $user = $this->user;
 
     // Act & Assert
     Livewire::test('quiz-info-card', ['quiz' => $quiz, 'user' => $user])

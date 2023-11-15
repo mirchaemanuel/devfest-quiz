@@ -11,7 +11,7 @@
             <div class="grid grid-cols-2">
                 <div class="font-bold">
                     <span>{{__('Attempts')}}:</span>
-                    <span id="quiz-{){ $quiz->id  }}-attempts" class="font-medium">{{ $totalCompletedAttempts  }}</span>
+                    <span id="quiz-{{ $quiz->id  }}-attempts" class="font-medium">{{ $totalCompletedAttempts  }}</span>
                 </div>
                 <div class="font-bold">
                     <span>{{ __('Questions') }}:</span>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="font-bold">
                     <span>{{__('Actual score')}}:</span>
-                    <span id="quiz-{{ $quiz->id  }}-score" class="font-medium">{{ $totalScore  }}</span>
+                    <span id="quiz-{{ $quiz->id  }}-score" class="font-medium">{{ $totalScore  }}/{{ $quiz->questions->sum('score') * $totalCompletedAttempts }}</span>
                 </div>
                 <div class="font-bold">
                     <span>{{ __('Max score') }}:</span>

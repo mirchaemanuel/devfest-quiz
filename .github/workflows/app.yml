@@ -63,9 +63,9 @@ jobs:
             ${{ env.REGISTRY }}/${{ github.repository }}
           tags: |
             type=sha,format=short
+            type=raw,value=latest,enable=${{ endsWith(GitHub.ref, 'master') || endsWith(GitHub.ref, 'main') }}
             type=ref,event=branch,enable=true,priority=600
             type=ref,event=tag,enable=true,priority=600
-            type=ref,event=pr,prefix=pr-,enable=true,priority=600
 
       - name: Build and push Docker image (app)
         uses: docker/build-push-action@v2

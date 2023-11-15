@@ -64,6 +64,21 @@ it('adds testing users only once', function () {
 
 });
 
+it('adds testing users only on test and local environment', function() {
+    // Arrange
+    App::partialMock()->shouldReceive('environment')->andReturn('production');
+
+     //Assert
+    $this->assertDatabaseCount(User::class, 0);
+
+    // Act
+    $this->artisan('db:seed');
+
+    // Assert
+    $this->assertDatabaseCount(User::class, 0);
+
+ });
+
 it('adds testing quiz attempts', function () {
     //Assert
     $this->assertDatabaseCount(UserQuizAttempt::class, 0);

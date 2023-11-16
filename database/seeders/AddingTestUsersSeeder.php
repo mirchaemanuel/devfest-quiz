@@ -11,10 +11,10 @@ class AddingTestUsersSeeder extends Seeder
     public function run()
     {
         if (in_array(App::environment(), ['local', 'testing'])) {
-            if (!User::where('email', 'a@a')->exists()) {
+            if (! User::where('email', 'a@a')->exists()) {
                 $user = User::factory()->create([
-                    'name'     => 'Test User',
-                    'email'    => 'a@a',
+                    'name' => 'Test User',
+                    'email' => 'a@a',
                     'password' => bcrypt('password'),
                 ]);
             }

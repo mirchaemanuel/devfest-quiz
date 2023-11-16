@@ -35,9 +35,6 @@
     @endif
 
     <div class="max-w-7xl mx-auto p-6 lg:p-8 w-full text-gray-900 dark:text-gray-100">
-        <div class="flex justify-center">
-           <img class="w-16 sm:w-12 lg:w-[200px]" src="{{ Vite::asset('resources/assets/images/quizfest.png') }}" alt="Image logo" title="LOGO" />
-        </div>
 
         <div class="mt-2 sm:mt-4 lg:mt-16">
             <section id="welcome" class="my-8 p-2 sm:p-4 lg:p-8">

@@ -88,3 +88,16 @@ it('shows ranking component', function () {
         ->assertOk()
         ->assertSeeLivewire('ranking');
 });
+
+it('shows logo image before welcome section', function() {
+    // Act & Assert
+    get(route('pages.home'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            '<img',
+            'src="' . Vite::asset('resources/assets/images/quizfest.png') . '"',
+            'alt="GDG Pescara - DevFest Quiz"',
+            '<section id="welcome"'
+        ], false);
+
+ });

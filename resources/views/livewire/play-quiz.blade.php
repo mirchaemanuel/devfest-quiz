@@ -72,7 +72,7 @@
                                     disabled="disabled"
                                 @endif
                                 @if(array_key_exists($question->id, $answers) && !$answers[$question->id])
-                                    data-answered="{{ $question->solution ? '0' : '1' }}"
+                                    data-answered="{{ $question->solution ? '1' : '0' }}"
                                 @endif
                                 class="bg-red-500 dark:bg-transparent hover:bg-red-700 dark:hover:bg-transparent
                                        dark:border dark:border-red-300 dark:hover:border-red-500 disabled:dark:border-red-700 disabled:text-red-700

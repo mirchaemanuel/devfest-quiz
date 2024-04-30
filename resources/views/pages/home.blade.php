@@ -80,8 +80,11 @@
                 </div>
             </div>
 
-            <div class="ml-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
-                Build with Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+            <div class="flex flex-col gap-2 ml-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:text-right sm:ml-0">
+                <span class="font-medium">
+                    <a href="https://github.com/mirchaemanuel/devfest-quiz">Contribute on GitHub</a>
+                </span>
+                <span>Build with Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})</span>
             </div>
         </div>
     </div>

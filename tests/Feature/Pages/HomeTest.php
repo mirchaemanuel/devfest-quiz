@@ -102,3 +102,4 @@ it('shows logo image before welcome section', function() {
         ], false);
 
  });
+

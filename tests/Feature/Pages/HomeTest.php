@@ -3,6 +3,7 @@
 use App\Models\Quiz;
 use App\Models\User;
 
+use Illuminate\Support\Facades\Vite;
 use function Pest\Laravel\get;
 
 it('shows welcome section', function () {

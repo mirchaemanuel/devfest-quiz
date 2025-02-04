@@ -23,6 +23,7 @@ it('has title column', function () {
         'title' => 'Test Quiz',
     ]);
 
+
     // Act & Assert
     expect($quiz->title)
         ->toBe('Test Quiz');

@@ -37,6 +37,8 @@
     <div class="max-w-7xl mx-auto p-6 lg:p-8 w-full text-gray-900 dark:text-gray-100">
 
         <div class="mt-2 sm:mt-4 lg:mt-16">
+            <img src="{{ Vite::asset('resources/assets/images/quizfest.png') }}" alt="GDG Pescara - DevFest Quiz" class="mx-auto w-4 sm:w-12 lg:w-16" loading="lazy"/>
+
             <section id="welcome" class="my-8 p-2 sm:p-4 lg:p-8">
                 <h2 class="font-bold text-2xl text-center pb-4 mb-4 w-full border-b-2">{{ __('GDG Pescara - DevFest Quiz') }}</h2>
                 <div
